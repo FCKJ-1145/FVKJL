@@ -50,7 +50,7 @@ export const DEFAULT_SETTINGS: LauncherSettings = {
   closeAfterLaunch: false,
   memory: 8,
   autoMemory: false,
-  isolationPolicy: 'modded_and_snapshot',
+  isolationPolicy: 'all',
   processPriority: 'normal',
   accent: FALLBACK_ACCENT,
 };

@@ -1,6 +1,6 @@
 [package]
 name = "aster-launcher"
-version = "0.2.1"
+version = "0.2.2"
 description = "FVKJL desktop shell"
 edition = "2024"
 rust-version = "1.90.0"
