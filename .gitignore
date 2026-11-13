@@ -1,0 +1,11 @@
+node_modules/
+dist/
+src-tauri/target/
+test-results/
+playwright-report/
+artifacts/*.png
+*.local
+.DS_Store
+
+# Playwright 独立输出
+.pw/

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="shell" x1="64" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#202B40"/>
+      <stop offset="1" stop-color="#0B111C"/>
+    </linearGradient>
+    <linearGradient id="star" x1="160" y1="128" x2="360" y2="384" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C4D0FF"/>
+      <stop offset="1" stop-color="#7892F5"/>
+    </linearGradient>
+  </defs>
+  <rect x="32" y="32" width="448" height="448" rx="128" fill="url(#shell)"/>
+  <rect x="33" y="33" width="446" height="446" rx="127" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="2"/>
+  <path d="M256 96C273.9 193.6 318.4 238.1 416 256C318.4 273.9 273.9 318.4 256 416C238.1 318.4 193.6 273.9 96 256C193.6 238.1 238.1 193.6 256 96Z" fill="url(#star)"/>
+  <circle cx="256" cy="256" r="39" fill="#111826"/>
+  <circle cx="256" cy="256" r="19" fill="#9AAFFF"/>
+</svg>

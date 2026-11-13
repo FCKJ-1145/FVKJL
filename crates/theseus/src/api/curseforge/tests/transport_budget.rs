@@ -1,0 +1,2 @@
+//! Placeholder: the original test sources were not included in the
+//! provided source archive, so this module is empty.

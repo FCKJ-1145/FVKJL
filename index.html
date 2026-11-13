@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090d14" />
+    <meta name="description" content="Aster Launcher 桌面启动器界面" />
+    <title>Aster Launcher</title>
+    <style>
+      /* 关键样式内联：CSS 到达前也不要出现滚动条（首帧 body 默认可见会闪一下滚动条） */
+      html, body { height: 100%; margin: 0; overflow: hidden; background: transparent; }
+      #root { height: 100%; overflow: hidden; }
+      html.boot, html.boot body, html.boot #root { overflow: hidden; }
+    </style>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23131a27'/%3E%3Cpath d='M32 8c2.2 12.2 7.8 17.8 20 20-12.2 2.2-17.8 7.8-20 20-2.2-12.2-7.8-17.8-20-20 12.2-2.2 17.8-7.8 20-20Z' fill='%239aafff'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23111826'/%3E%3C/svg%3E"
+    />
+    <script>
+      // 在首帧之前恢复主题，避免启动时先闪一下深色再切到浅色。
+      (function () {
+        try {
+          var stored = localStorage.getItem('aster.settings');
+          var settings = stored ? JSON.parse(stored) : {};
+          var theme = settings.theme === 'light' ? 'light' : 'dark';
+          var root = document.documentElement;
+          // 启动阶段锁住滚动容器，避免窗口尚未定型时闪出滚动条（revealWindow 里解锁）。
+          // 浏览器预览没有 revealWindow，不加锁，并留一个兜底定时器。
+          if ('__TAURI_INTERNALS__' in window) {
+            root.classList.add('boot');
+            setTimeout(function () { root.classList.remove('boot'); }, 4000);
+          }
+          root.dataset.theme = theme;
+          root.dataset.runtime = '__TAURI_INTERNALS__' in window ? 'tauri' : 'web';
+          root.dataset.reduceMotion = String(Boolean(settings.reduceMotion));
+          root.dataset.glass = settings.translucent === false ? 'off' : 'on';
+          // 材质强度（0-100，越高越通透）→ 着色层透明度。
+          // 与 src/lib/palette.ts 的 applyGlassStrength 是同一份映射，两处需同步修改。
+          var strength = typeof settings.glassStrength === 'number' && settings.glassStrength >= 0 && settings.glassStrength <= 100
+            ? settings.glassStrength
+            : 60;
+          if (settings.translucent === false) {
+            root.style.setProperty('--shell-alpha-top', '1');
+            root.style.setProperty('--shell-alpha-bottom', '1');
+          } else {
+            var t = strength / 100;
+            var mix = function (opaque, clear) { return String(opaque + (clear - opaque) * t); };
+            root.style.setProperty('--shell-alpha-top', mix(0.88, 0.32));
+            root.style.setProperty('--shell-alpha-bottom', mix(0.94, 0.4));
+          }
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'light' ? '#eef2f8' : '#090d14');
+        } catch (error) {
+          // localStorage 不可用时沿用默认深色主题。
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
