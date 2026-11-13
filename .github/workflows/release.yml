@@ -61,3 +61,28 @@ jobs:
           uploadUpdaterJson: true
           updaterJsonPreferNsis: true
           args: --bundles nsis
+
+      # 把 latest.json 里的下载地址改写成镜像，加快国内下载速度。
+      # 签名在打包时已生成，改写 URL 不影响安装包的签名校验。
+      - name: Rewrite updater URLs to mirror
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MIRROR: https://gh-proxy.com/
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $dir = Join-Path $env:RUNNER_TEMP 'updater'
+          New-Item -ItemType Directory -Path $dir -Force | Out-Null
+          gh release download $tag --pattern latest.json --dir $dir --clobber
+          $file = Join-Path $dir 'latest.json'
+          $json = Get-Content $file -Raw | ConvertFrom-Json
+          foreach ($key in $json.platforms.PSObject.Properties.Name) {
+            $url = $json.platforms.$key.url
+            if ($url -and -not $url.StartsWith($env:MIRROR)) {
+              $json.platforms.$key.url = "$env:MIRROR$url"
+            }
+          }
+          $text = $json | ConvertTo-Json -Depth 10
+          [IO.File]::WriteAllText($file, $text, (New-Object System.Text.UTF8Encoding($false)))
+          gh release upload $tag $file --clobber
+          Get-Content $file -Raw
