@@ -32,7 +32,6 @@
     "dialog:allow-confirm",
     "dialog:allow-save",
     "updater:default",
-    "process:allow-restart",
     "opener:default",
     "os:allow-platform",
     "os:allow-version",

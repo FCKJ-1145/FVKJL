@@ -16,6 +16,12 @@ use tauri::Manager;
 use tauri_plugin_fs::FsExt;
 use theseus::prelude::*;
 
+/// 安装更新后由前端调用，重启应用以运行新版本。
+#[tauri::command]
+fn restart_app(app: tauri::AppHandle) {
+    app.restart();
+}
+
 /// 全局透明材质开关：开启 = DWM 高斯模糊铺在卡片圆角区域上，
 /// 桌面画面实时透出；关闭 = 撤销模糊，由页面实体底接管。
 #[tauri::command]
@@ -182,7 +188,6 @@ fn main() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_opener::init())
-        .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             // 窗口以隐藏状态创建，由前端首帧渲染完成后调用 show()，
@@ -239,7 +244,11 @@ fn main() {
         .plugin(api::files::init())
         .plugin(api::shortcuts::init())
         .manage(api::files::StudioWatchers::default())
-        .invoke_handler(tauri::generate_handler![initialize_state, set_glass])
+        .invoke_handler(tauri::generate_handler![
+            initialize_state,
+            set_glass,
+            restart_app
+        ])
         .run(tauri_context)
         .expect("error while running Aster Launcher");
 }

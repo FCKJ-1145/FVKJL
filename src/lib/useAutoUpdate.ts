@@ -161,8 +161,8 @@ export function useAutoUpdate({ enabled, desktop }: UseAutoUpdateOptions): Updat
 
       // 安装包已交给 NSIS（passive），重启后运行新版本
       setPhase('ready');
-      const { relaunch } = await import('@tauri-apps/plugin-process');
-      await relaunch();
+      const { invoke } = await import('@tauri-apps/api/core');
+      await invoke('restart_app');
     } catch (cause) {
       workingRef.current = false;
       setPhase('error');
