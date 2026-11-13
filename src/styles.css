@@ -298,9 +298,16 @@ html[data-glass="off"] .glass-panel {
 }
 
 .brand-mark {
+  display: block;
   width: 36px;
   height: 36px;
   flex: 0 0 auto;
+  object-fit: contain;
+  /* PNG 自带透明圆角，这里只是兜底；同时禁掉图片自身的拖拽/选中，
+     否则会抢走品牌区的窗口拖拽手势。 */
+  border-radius: 8px;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .brand-copy {
@@ -723,7 +730,8 @@ html[data-runtime="tauri"] .glass-panel {
   position: relative;
   display: grid;
   min-height: 324px;
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  /* 单列：视觉块移除后只剩文字区，占满整行 */
+  grid-template-columns: minmax(0, 1fr);
   overflow: hidden;
   padding: 28px 32px;
   border-radius: 20px;
@@ -872,145 +880,14 @@ select option {
   opacity: 0.32;
 }
 
-.launch-visual {
-  position: relative;
-  z-index: 1;
-  width: 280px;
-  height: 280px;
-  align-self: center;
-  justify-self: center;
-}
-
-.orbit {
-  position: absolute;
-  border: 1px solid rgba(var(--accent-rgb), 0.16);
-  border-radius: 50%;
-  animation: orbit-spin 20s linear infinite;
-}
-
-.orbit-outer {
-  inset: 0;
-}
-
-.orbit-middle {
-  inset: 25px;
-  border-color: rgba(255, 255, 255, 0.09);
-  animation-duration: 14s;
-  animation-direction: reverse;
-}
-
-.orbit > span {
-  position: absolute;
-  top: 23px;
-  left: 31px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-
-.orbit-middle > span {
-  top: -3px;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  background: var(--cyan);
-}
-
+/* 首页「发射视觉」（光环 / 双轨道 / 圆心 / JDK、内存徽章）已整体移除。
+   orbit-spin 关键帧保留：全局 .spin 加载图标复用它。 */
 @keyframes orbit-spin {
   to { transform: rotate(360deg); }
 }
 
-.orbit-glow {
-  position: absolute;
-  inset: 66px;
-  border-radius: 50%;
-  background: rgba(var(--accent-rgb), 0.18);
-  filter: blur(32px);
-}
-
-.progress-orbit {
-  position: absolute;
-  inset: 40px;
-  width: 200px;
-  height: 200px;
-  overflow: visible;
-  transform: rotate(-90deg);
-}
-
-.progress-orbit circle {
-  fill: none;
-  stroke-width: 2;
-}
-
-.progress-track {
-  stroke: rgba(255, 255, 255, 0.065);
-}
-
-.progress-value {
-  stroke: var(--accent);
-  stroke-linecap: round;
-  transition: stroke-dashoffset 120ms linear;
-}
-
-.orbit-core {
-  position: absolute;
-  inset: 76px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 50%;
-  color: var(--accent);
-  background: radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.12), rgba(var(--accent-rgb), 0.06) 50%, rgba(7, 11, 18, 0.62));
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.09);
-}
-
-.orbit-core > span {
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-}
-
 .spin {
   animation: orbit-spin 900ms linear infinite;
-}
-
-.orbit-badge {
-  position: absolute;
-  display: flex;
-  min-height: 34px;
-  align-items: center;
-  gap: 6px;
-  padding: 0 11px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--text);
-  background: rgba(20, 27, 39, 0.86);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-}
-
-.orbit-badge > svg {
-  color: var(--success);
-}
-
-.orbit-badge > span {
-  color: var(--muted);
-  font-size: 10.5px;
-}
-
-.badge-java {
-  top: 26px;
-  right: -4px;
-}
-
-.badge-memory {
-  bottom: 30px;
-  left: -8px;
 }
 
 .home-lower {
@@ -2015,13 +1892,8 @@ html[data-maximized="true"] .modal-backdrop {
   }
 
   .launch-stage {
-    grid-template-columns: minmax(0, 1fr) 260px;
     padding-right: 24px;
     padding-left: 24px;
-  }
-
-  .launch-visual {
-    transform: scale(0.9);
   }
 
   .settings-grid {
@@ -2052,15 +1924,6 @@ html[data-maximized="true"] .modal-backdrop {
   main {
     padding-right: 22px;
     padding-left: 22px;
-  }
-
-  .launch-stage {
-    grid-template-columns: minmax(0, 1fr) 220px;
-  }
-
-  .launch-visual {
-    margin-left: -24px;
-    transform: scale(0.78);
   }
 
   .home-lower {
@@ -2177,10 +2040,6 @@ html[data-maximized="true"] .modal-backdrop {
 
   .launch-copy h2 {
     font-size: 34px;
-  }
-
-  .launch-visual {
-    display: none;
   }
 
   .launch-progress {
@@ -5222,8 +5081,7 @@ button,
 .queue-size,
 .runtime-row strong,
 .discover-card-meta,
-.discover-page-number,
-.orbit-core > span {
+.discover-page-number {
   font-variant-numeric: tabular-nums;
 }
 
@@ -5613,19 +5471,6 @@ html[data-reduce-motion="true"] .app-shell *::after {
 }
 
 /* ---- 5. 低成本渲染优化（不改变静态外观） ---- */
-.launch-visual {
-  contain: layout paint;
-}
-
-.orbit {
-  backface-visibility: hidden;
-  will-change: transform;
-}
-
-.orbit-glow {
-  contain: paint;
-}
-
 main {
   overflow-x: hidden;
   overscroll-behavior: contain;
@@ -5719,41 +5564,6 @@ html[data-theme="light"] .notification-dot {
 html[data-theme="light"] .progress-line,
 html[data-theme="light"] .download-progress {
   background: rgba(17, 24, 38, 0.09);
-}
-
-html[data-theme="light"] .progress-track {
-  stroke: rgba(17, 24, 38, 0.09);
-}
-
-html[data-theme="light"] .orbit {
-  border-color: rgba(var(--accent-rgb), 0.28);
-}
-
-html[data-theme="light"] .orbit-middle {
-  border-color: rgba(17, 24, 38, 0.11);
-}
-
-html[data-theme="light"] .orbit-core {
-  border-color: rgba(17, 24, 38, 0.11);
-  background: radial-gradient(
-    circle at 35% 25%,
-    rgba(255, 255, 255, 0.92),
-    rgba(var(--accent-rgb), 0.1) 52%,
-    rgba(238, 243, 250, 0.8)
-  );
-  box-shadow:
-    0 18px 46px rgba(23, 32, 48, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-html[data-theme="light"] .orbit-badge {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 10px 24px rgba(23, 32, 48, 0.13);
-}
-
-html[data-theme="light"] .orbit-badge > span,
-html[data-theme="light"] .orbit-core > span {
-  color: var(--text-secondary);
 }
 
 html[data-theme="light"] .launch-button.stop,

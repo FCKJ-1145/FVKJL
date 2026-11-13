@@ -2,7 +2,6 @@ import { memo } from 'react';
 import { Check, Clock3, Cpu, Gauge, Layers3, Play, Plus, Settings2, Square } from 'lucide-react';
 import { formatTime, installStageLabel, loaderLabel } from '../lib/launcher';
 import type { InstanceInfo, LaunchStatus, View } from '../types';
-import { LaunchVisual } from './LaunchVisual';
 import { Select } from './Select';
 
 interface HomeViewProps {
@@ -68,7 +67,6 @@ export const HomeView = memo(function HomeView({ instance, instances, status, pr
             <div className="progress-line"><span style={{ transform: `scaleX(${status === 'idle' || status === 'running' ? 1 : Math.min(100, progress) / 100})` }} /></div>
           </div>
         </div>
-        <LaunchVisual status={status} progress={progress} memory={memory} javaMajor={javaMajor} />
       </section>
 
       <div className="home-lower">
