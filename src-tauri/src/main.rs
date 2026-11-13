@@ -180,7 +180,7 @@ fn main() {
         &tauri_context.config().identifier,
     );
 
-    tracing::info!("Initializing tracing subscriber. Loading Aster Launcher!");
+    tracing::info!("Initializing tracing subscriber. Loading FVKJL!");
 
     tauri::Builder::default()
         .plugin(tauri_plugin_http::init())
@@ -250,5 +250,5 @@ fn main() {
             restart_app
         ])
         .run(tauri_context)
-        .expect("error while running Aster Launcher");
+        .expect("error while running FVKJL");
 }

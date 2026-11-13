@@ -54,7 +54,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: 'Aster Launcher v__VERSION__'
+          releaseName: 'FVKJL v__VERSION__'
           releaseBody: '下载下方安装包，已有版本会自动检查更新。'
           releaseDraft: true
           prerelease: false

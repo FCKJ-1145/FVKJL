@@ -1932,7 +1932,7 @@ pub async fn instance_repair_managed_modrinth(
 }
 
 /// 离线模式下若还没有任何离线账号，自动创建一个默认离线账号。
-/// theseus 的启动流程要求离线模式必须存在离线凭据，而 Aster 的 UI 没有账号模块。
+/// theseus 的启动流程要求离线模式必须存在离线凭据，而 FVKJL 的 UI 没有账号模块。
 async fn ensure_offline_account() -> Result<()> {
     if theseus::minecraft_auth::get_default_user(true).await?.is_some() {
         return Ok(());

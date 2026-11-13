@@ -301,7 +301,7 @@ export function SettingsView({ settings, backendSettings, javaVersions, maxMemor
         <section className="settings-section glass-panel" aria-labelledby="update-settings">
           <div className="settings-title"><span><RefreshCw size={19} aria-hidden="true" /></span><div><h2 id="update-settings">关于与更新</h2><p>检查并安装启动器的新版本。</p></div></div>
           <div className="setting-row">
-            <div><strong><ShieldCheck size={16} aria-hidden="true" />当前版本</strong><span>Aster Launcher · Windows x64</span></div>
+            <div><strong><ShieldCheck size={16} aria-hidden="true" />当前版本</strong><span>FVKJL · Windows x64</span></div>
             <output className="version-value">v{updater.currentVersion}</output>
           </div>
           <div className="setting-row">
